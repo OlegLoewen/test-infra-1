@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gardener/test-infra/integration-tests/e2e/config"
+	"github.com/gardener/test-infra/integration-tests/e2e/util"
 	"github.com/pkg/errors"
 	"io"
 	"io/ioutil"
@@ -20,10 +21,6 @@ import (
 )
 
 type TestsKind string
-
-const (
-	logMaxLength = 300
-)
 
 func init() {
 	var err error
@@ -59,7 +56,7 @@ func Run(descFile string) (resultsPath string) {
 	if descFile == "" {
 		log.Fatal("no valid description file provided.")
 	}
-	log.Infof("running kubetest for %d e2e tests:\n%s", getLinesCount(descFile), getFileContent(descFile))
+	log.Infof("running kubetest for %d e2e tests:\n%s", getLinesCount(descFile), util.LimitString(getFileContent(descFile), 500))
 
 	parallelTestsFocus, serialTestsFocus := escapeAndConcat(descFile)
 	if parallelTestsFocus != "" {
@@ -110,11 +107,7 @@ func runKubetest(args KubetestArgs) {
 	cmd.Dir = config.KubernetesPath
 
 	cmdString := strings.Join(cmd.Args, " ")
-	if len(cmdString) > logMaxLength {
-		log.Infof("%s...", cmdString[:logMaxLength])
-	} else {
-		log.Info(cmdString)
-	}
+	log.Info(util.LimitString(cmdString, 400))
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer

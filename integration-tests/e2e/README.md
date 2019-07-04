@@ -23,6 +23,7 @@ Ensure all required environment variables have been set. Create a `shoot.config`
 | K8S_VERSION | k8sVersion |  | **[Required]** Kubernetes cluster version |
 | TESTCASE_GROUPS | testcasegroup |  | **[Required]** testcases groups to run (comma separated). E.g. `fast,slow` |
 | CLOUDPROVIDER | cloudprovider |  | **[Required]** Cloud provider (supported: aws, gcp, azure, alicloud, openstack) |
+| E2E_KUBECONFIG_PATH | kubeconfig | $E2E_EXPORT_PATH/shoot.config | **[Required]** File path of kubeconfig file |
 | DESCRIPTION_FILE |  | working.json | Path to description json file, which lists the testcases to run |
 | E2E_EXPORT_PATH  |  | /tmp/e2e/export  | Location of `shoot.config` file and test results |
 | GINKGO_PARALLEL |  | true | Whether to run kubetest in parallel way. Testcases that consist of the `[Serial] tag are executed serially. |
@@ -30,9 +31,8 @@ Ensure all required environment variables have been set. Create a `shoot.config`
 | IGNORE_SKIP_LIST |  | false | Ignores exclusion of testcases that are listed in `skip.json`  |
 | INCLUDE_UNTRACKED_TESTS |  | false | Executes testcases that are not mentioned in description files for given provider and kubernetes release version |
 | FLAKE_ATTEMPTS | flakeAttemps | 2 | Flake attempts for kubetest: how many time a failed test should be rerun |
-| PUBLISH_RESULTS_TO_TESTGRID |  | false | Whether to push test results to google cloud storage, for testgrid |
+| PUBLISH_RESULTS_TO_TESTGRID |  | false | Whether to push test results to google cloud storage, for testgrid. Requires to have google cloud storage credentials to be set in `GOOGLE_APPLICATION_CREDENTIALS` |
 | RETEST_FLAGGED_ONLY |  | false | Runs testcases with retest flag only. Value of `DESCRIPTION_FILE` is ignored |
-| E2E_KUBECONFIG_PATH | kubeconfig | $E2E_EXPORT_PATH/shoot.config | File path of kubeconfig file |
 | - | debug | false | Runs application in debug mode |
 
 ### Description Files
